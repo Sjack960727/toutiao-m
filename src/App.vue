@@ -8,10 +8,4 @@
 export default {}
 </script>
 
-<style lang="less">
-.box {
-  width: 2rem;
-  height: 2rem;
-  background-color: green;
-}
-</style>
+<style></style>
