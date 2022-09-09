@@ -75,11 +75,13 @@ export default {
     ...mapMutations(['SET_TOKEN']),
     async onSubmit(values) {
       // console.log('submit', values)
+      console.log(mapMutations(['SET_TOKEN']))
       this.$toast.loading({
         message: '加载中...',
         forbidClick: true,
         duration: 0
       })
+
       try {
         const { data } = await Login(this.mobile, this.code)
         console.log(data)
