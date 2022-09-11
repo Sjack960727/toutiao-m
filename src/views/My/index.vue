@@ -15,9 +15,9 @@
                 round
                 width="1.5rem"
                 height="1.5rem"
-                src="http://img01.yzcdn.cn/vant/cat.jpeg"
+                :src="userInfo.photo"
               />
-              <span class="mobile">13111111111</span>
+              <span class="mobile">{{ userInfo.name }}</span>
             </van-row>
           </van-col>
           <van-col span="7"></van-col>
@@ -36,14 +36,22 @@
         <van-row
           ><van-grid class="grid" :border="false">
             <van-grid-item text="头条"
-              ><template #icon> 0 </template></van-grid-item
+              ><template #icon>
+                {{ userInfo.art_count }}
+              </template></van-grid-item
             >
             <van-grid-item text="粉丝"
-              ><template #icon>0</template></van-grid-item
+              ><template #icon>{{
+                userInfo.fans_count
+              }}</template></van-grid-item
             ><van-grid-item text="关注"
-              ><template #icon> 0 </template></van-grid-item
+              ><template #icon>
+                {{ userInfo.follow_count }}
+              </template></van-grid-item
             ><van-grid-item text="获赞"
-              ><template #icon> 0 </template></van-grid-item
+              ><template #icon>
+                {{ userInfo.like_count }}
+              </template></van-grid-item
             ></van-grid
           ></van-row
         >
@@ -92,14 +100,20 @@
 <script>
 import { mapGetters } from 'vuex'
 import mobileSrc from '@/assets/imgs/mobile.png'
+import { getUserInfoAPI } from '@/api'
 export default {
+  name: 'MY',
   data() {
     return {
-      mobileSrc
+      mobileSrc,
+      userInfo: {}
     }
   },
   computed: {
     ...mapGetters(['isLogin'])
+  },
+  created() {
+    this.getUserInfo()
   },
   methods: {
     logout() {
@@ -115,6 +129,21 @@ export default {
         .catch(() => {
           // on cancel
         })
+    },
+    async getUserInfo() {
+      try {
+        if (!this.isLogin) return
+        const { data } = await getUserInfoAPI()
+        this.userInfo = data.data
+        // console.log(data)
+      } catch (error) {
+        // console.log(error)
+        if (error.response && error.response.status === 401) {
+          this.$toast.fail('用户登陆失败,请重新登录')
+        } else {
+          throw error
+        }
+      }
     }
   }
 }
