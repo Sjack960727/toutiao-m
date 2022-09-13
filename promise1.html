@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // executor执行器函数
+      // resolve 成功 reject失败
+      // value 成功原因 ，reject失败原因
+      const PENDING = 'pending'
+      const FUFILLED = 'fulfilled'
+      const REJECTED = 'rejected'
+      class Promise {
+        value
+        reason
+        status = PENDING
+        onFulfilled
+        onRejected
+        onFulfilledCallback = []
+        onRejectedCallback = []
+        constructor(executor) {
+          const resolve = (value) => {
+            if (this.status === PENDING) {
+              this.value = value
+              this.status = FUFILLED
+              //   this.onFulfilled(this.value)
+              this.onFulfilledCallback.forEach((cb) => cb())
+            }
+          }
+          const reject = (reason) => {
+            if (this.status === PENDING) {
+              this.reason = reason
+              this.status = REJECTED
+              //   this.onRejected(this.reason)
+              this.onRejectedCallback.forEach((cb) => cb())
+            }
+          }
+          try {
+            executor(resolve, reject)
+          } catch (error) {
+            reject()
+          }
+        }
+        then(onFulfilled, onRejected) {
+          if (this.status === FUFILLED) {
+            onFulfilled(this.value)
+          }
+          if (this.status === REJECTED) {
+            onRejected(this.reason)
+          }
+          if (this.status === PENDING) {
+            // 异步
+            // 订阅
+            // this.onFulfilled = onFulfilled
+            // this.onRejected = onRejected
+            this.onFulfilledCallback.push(() => {
+              onFulfilled(this.value)
+            })
+            this.onRejectedCallback.push(() => {
+              onRejected(this.reason)
+            })
+          }
+        }
+      }
+
+      //   console.log(
+      //     new Promise((resolve, reject) => {
+      //       resolve(), reject()
+      //     })
+      //   )
+
+      const p = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.log('你好')
+          resolve('成功')
+        }, 3000)
+        // resolve('成功')
+        // reject('失败')
+      })
+      p.then((res) => {
+        console.log('第一次调用', res)
+      })
+
+      p.then((res) => {
+        console.log('第二次调用', res)
+      })
+    </script>
+  </body>
+</html>
