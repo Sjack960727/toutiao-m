@@ -27,7 +27,11 @@
               justify="center"
               align="center"
               style="height: 100%"
-              ><van-button size="mini" class="editbtn" round
+              ><van-button
+                size="mini"
+                class="editbtn"
+                round
+                @click="$router.push('/user')"
                 >编辑按钮</van-button
               >
             </van-row>

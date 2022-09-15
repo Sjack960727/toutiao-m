@@ -28,3 +28,13 @@ export const getUserInfoAPI = () => {
     // }
   })
 }
+
+export const uploadPhoto = (file) => {
+  const fm = new FormData()
+  fm.append('photo', file)
+  return request({
+    url: '/v1_0/user/photo',
+    method: 'PATCH',
+    data: fm
+  })
+}
