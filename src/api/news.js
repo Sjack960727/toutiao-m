@@ -14,3 +14,14 @@ export const getArticles = (id, timestamp) => {
     }
   })
 }
+
+export const getResultsAPI = (page, perpage, q) => {
+  return request({
+    url: '/v1_0/search',
+    params: {
+      page,
+      per_page: perpage,
+      q
+    }
+  })
+}

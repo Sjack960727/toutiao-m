@@ -8,15 +8,16 @@ export default new Vuex.Store({
   plugins: [
     createPersistedSate({
       key: 'HEIMA_TOUTIAO',
-      reducer: ({ tokenObj, myChannels }) => {
-        return { tokenObj, myChannels }
+      reducer: ({ tokenObj, myChannels, histories }) => {
+        return { tokenObj, myChannels, histories }
       }
     })
   ],
   // 属性
   state: {
     tokenObj: {},
-    myChannels: []
+    myChannels: [],
+    histories: []
   },
   // 计算属性
   getters: {
@@ -31,6 +32,9 @@ export default new Vuex.Store({
     },
     SET_MY_CHANNELS(state, channels) {
       state.myChannels = channels
+    },
+    SET_HISTORIES(state, histories) {
+      state.histories = histories
     }
   },
   actions: {},
